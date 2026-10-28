@@ -16,7 +16,15 @@ for (const marker of [
   'zec-signal-snapshot-v1',
   'function identityCheck',
   'No synthetic data has been substituted',
-  'liquidity does not contribute to the attention index'
+  'liquidity does not contribute to the attention index',
+  'function identityCheck',
+  'function exportCsv',
+  'CSV export is disabled in example mode',
+  'Promise.allSettled',
+  'PARTIAL SCAN',
+  'QUOTE ADDRESS MISSING',
+  'Attention index breakdown',
+  'components:{turnover:turnoverPoints'
 ]) assert.ok(html.includes(marker), 'missing product guardrail or feature: ' + marker);
 
 assert.ok(html.includes('typeof v==="string"&&v.trim()===""'), 'empty strings must not count as valid numeric data');
