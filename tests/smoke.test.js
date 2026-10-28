@@ -63,6 +63,20 @@ const fullySignalled = calc({
 });
 assert.equal(fullySignalled.score, 100, 'the three documented components should sum to 100');
 assert.deepEqual(fullySignalled.components, { turnover: 40, imbalance: 30, move: 30 });
+const watchSignals = calc({
+  liquidity: { usd: 100 }, volume: { h24: 50 }, priceChange: { h24: 10 },
+  txns: { h24: { buys: 2, sells: 2 } },
+  baseToken: { address: 'base' }, quoteToken: { address: 'quote' }, pairAddress: 'pair'
+});
+assert.equal(watchSignals.score, 24, '0.35x turnover and a 10% move should add 15 and 9 points');
+assert.ok(watchSignals.flags.includes('TURNOVER WATCH'), 'a scored turnover watch must be visible as a flag');
+assert.ok(watchSignals.flags.includes('PRICE MOVE WATCH'), 'a scored 10% move must be visible as a flag');
+const elevatedTurnover = calc({
+  liquidity: { usd: 100 }, volume: { h24: 200 }, priceChange: { h24: 0 },
+  txns: { h24: { buys: 10, sells: 10 } },
+  baseToken: { address: 'base' }, quoteToken: { address: 'quote' }, pairAddress: 'pair'
+});
+assert.ok(elevatedTurnover.flags.includes('ELEVATED TURNOVER'), 'a 1x to 3x turnover score must have a matching flag');
 const missingLiquidity = calc({
   liquidity: { usd: '' }, volume: { h24: 50 }, priceChange: { h24: 0 },
   txns: { h24: { buys: 2, sells: 2 } },
