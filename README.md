@@ -13,6 +13,7 @@ A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token
 - Keeps successful query results when one of the configured searches fails, labels the scan partial, and reports how many queries failed instead of discarding all results.
 - Shows each configured search term's success/failure and provider-returned pair count, making query coverage visible rather than presenting one unexplained total.
 - Adds explorer links for supported networks and compares quote-token addresses across indexed pairs on the same network to surface symbol/address inconsistencies. Conflicting quote addresses appear in the flagged-market filter. This is a consistency check, not authoritative asset verification.
+- Checks Solana quote mints against one curated OmniBridge ZEC reference address, links to the reference notes and Solscan, and clearly labels matches, non-matches, and networks without a configured reference. A match does not prove backing, bridge security or redeemability.
 - Documents the attention index's full 100-point heuristic and shows the per-market point contribution from turnover, swap-count imbalance, and price movement.
 - Every non-zero attention trigger now has a corresponding visible market flag, including turnover watch/elevated turnover and 10% price-move watch signals.
 - Flags new pools, sparse activity, and missing token addresses without silently treating them as score points. Negative or blank numeric liquidity/volume/count fields are treated as invalid rather than being silently clamped to zero.
