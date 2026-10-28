@@ -23,7 +23,8 @@ A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token
 - Separately flags zero, missing, and thin liquidity, new pools, and sparse activity. A volume/liquidity ratio is not calculated when liquidity is missing or zero.
 - Shows per-pair explanations, flags, token/pair addresses, pool age where available, provider links, supported chain explorer links, quote-address consistency checks, and the app's fetch time.
 - Shows scan age in the interface. The fetch time means when this app received a provider response, not when every underlying market field was last updated.
-- Adds CSV export for the currently filtered market set, a browser-local watchlist, and previous-scan comparisons for reported liquidity and volume.
+- Adds a market-footprint view with known reported liquidity by network and the top indexed pools by reported liquidity. Networks with no known liquidity are shown as unknown rather than $0.
+- Adds CSV export for the currently filtered market set, a browser-local watchlist, and previous-complete-scan comparisons for reported liquidity and volume.
 - Includes a clearly labelled synthetic example mode. Starting a live scan clears example values; example values are never silently substituted after an API failure.
 - No wallet, trade execution, paid data dependency, or claim that quote-token backing is verified.
 
