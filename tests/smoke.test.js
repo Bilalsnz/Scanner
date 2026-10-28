@@ -57,10 +57,9 @@ assert.equal(safeMarketUrl('https://www.dexscreener.com/solana/example'), 'https
 assert.equal(safeMarketUrl('javascript:alert(1)'), 'https://dexscreener.com');
 assert.equal(safeMarketUrl('https://evil.example/path'), 'https://dexscreener.com');
 
-const tokenExplorerStart = inlineScripts[0].indexOf('function tokenExplorerUrl(chain,address){');
-const tokenExplorerEnd = inlineScripts[0].indexOf('\\nfunction identityCheck(p)', tokenExplorerStart);
-assert.ok(tokenExplorerStart >= 0 && tokenExplorerEnd > tokenExplorerStart, 'token-specific explorer helper must be extractable');
-const tokenExplorerUrl = new Function('encodeURIComponent', 'explorerUrl', inlineScripts[0].slice(tokenExplorerStart, tokenExplorerEnd) + '; return tokenExplorerUrl;')(encodeURIComponent, (chain, address) => 'https://example.test/' + chain + '/' + address);
+const tokenExplorerMatch = inlineScripts[0].match(/function tokenExplorerUrl\\(chain,address\\)\\{[^\\n]+\\}/);
+assert.ok(tokenExplorerMatch, 'token-specific explorer helper must be extractable');
+const tokenExplorerUrl = new Function('encodeURIComponent', 'explorerUrl', tokenExplorerMatch[0] + '; return tokenExplorerUrl;')(encodeURIComponent, (chain, address) => 'https://example.test/' + chain + '/' + address);
 assert.equal(tokenExplorerUrl('solana', 'MintABC'), 'https://solscan.io/token/MintABC');
 assert.equal(tokenExplorerUrl('bsc', '0xABC'), 'https://example.test/bsc/0xABC');
 assert.equal(tokenExplorerUrl('solana', ''), null);
