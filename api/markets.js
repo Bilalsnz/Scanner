@@ -3,7 +3,7 @@ module.exports = async function handler(req, res) {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ error: "Method not allowed" });
   }
-  const raw = typeof req.query.q === "string" ? req.query.q : "ZEC";
+  const raw = req.query && typeof req.query.q === "string" ? req.query.q : "ZEC";
   const q = raw.trim().slice(0, 48);
   if (!q || /[<>\\]/.test(q)) {
     res.setHeader("Cache-Control", "no-store");
@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
     }
     try {
       const parsed = JSON.parse(body);
-      if (!parsed || (parsed.pairs !== null && parsed.pairs !== undefined && !Array.isArray(parsed.pairs))) {
+      if (!parsed || (!Array.isArray(parsed.pairs) && parsed.pairs !== null)) {
         res.setHeader("Cache-Control", "no-store");
         return res.status(502).json({ error: "DEX Screener returned an unexpected response shape" });
       }
