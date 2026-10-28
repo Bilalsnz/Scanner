@@ -27,7 +27,7 @@ The interface provides:
 - **Search provenance:** each configured query displays whether it succeeded and how many pairs the provider returned, so partial search coverage is visible.
 - **Failure-aware behavior:** partial query failures are disclosed without discarding successful query results. Failed live scans never silently fall back to synthetic data. CSV export is blocked in example mode.
 - **Address consistency checks:** quote-token addresses are compared across indexed pairs on the same network. Conflicts are surfaced, but consistency is explicitly not treated as proof of authenticity.
-- **Curated Solana mint reference:** the app compares the quote mint with a documented OmniBridge ZEC reference address, links the reference notes and Solscan, and distinguishes a match from an unmatched mint. This is a scoped reference check, not an authoritative asset registry or proof of reserves, bridge security, or redeemability.
+- **Curated mint references:** the app compares quote-token addresses against known Solana OmniBridge ZEC and BNB Chain Binance-Peg ZEC references. It links to reference notes and explorers, and distinguishes matches, mismatches, and unsupported networks. This is not an authoritative cross-chain registry or proof of current reserves, bridge/custody safety, or redeemability.
 
 ## Why the design is deliberately read-only
 
@@ -37,7 +37,7 @@ The product focuses on evidence gathering and market inspection. It does not con
 
 **Primary source:** DEX Screener's public API. The app retrieves provider search results through a same-origin Vercel serverless proxy.
 
-The application only claims that the provider returned a pair with quote-token symbol `ZEC`. It does **not** currently independently verify quote-token contracts against an authoritative Zcash asset registry, establish 1:1 backing or redeemability, audit token permissions, prove organic trading, or calculate executable price impact.
+The application only claims that the provider returned a pair with quote-token symbol `ZEC`. It compares two networks against a small curated address list, but does **not** have a complete authoritative cross-chain asset registry, prove current 1:1 backing or redeemability, audit token permissions, prove organic trading, or calculate executable price impact.
 
 The attention index uses these explicit, tiered rules:
 
