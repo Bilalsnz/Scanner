@@ -70,6 +70,8 @@ assert.ok(refStart >= 0 && refEnd > refStart, 'curated token-reference check mus
 const referenceCheck = new Function(inlineScripts[0].slice(refStart, refEnd) + '; return referenceCheck;')();
 const omniMint = 'A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS';
 assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: omniMint } }).status, 'match');
+assert.equal(referenceCheck({ chainId: 'bsc', quoteToken: { address: '0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb' } }).status, 'match');
+assert.equal(referenceCheck({ chainId: 'bsc', quoteToken: { address: '0xBAD' } }).status, 'unmatched');
 assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: 'another-mint' } }).status, 'unmatched');
 assert.equal(referenceCheck({ chainId: 'ethereum', quoteToken: { address: '0x123' } }).status, 'not_configured');
 assert.equal(referenceCheck({ chainId: 'solana', quoteToken: {} }).status, 'unavailable');
