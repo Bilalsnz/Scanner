@@ -10,8 +10,11 @@ A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token
 - Fixes minimum-liquidity filtering so markets with unknown liquidity are not incorrectly treated as meeting a positive minimum threshold.
 - Adds network, flagged-market, watchlist, liquidity, and ranking filters; CSV export respects the currently visible filtered market set.
 - Adds a browser-local watchlist and compares reported liquidity/volume against the prior successful scan on the same browser. These observations are local-only and do not create a server-side historical database.
-- Adds explorer links for supported networks and compares quote-token addresses across indexed pairs on the same network to surface symbol/address inconsistencies. This is a consistency check, not authoritative asset verification.
-- Documents the attention index's full 100-point heuristic and adds new-pool and sparse-activity flags without silently treating them as score points.
+- Keeps successful query results when one of the configured searches fails, labels the scan partial, and reports how many queries failed instead of discarding all results.
+- Adds explorer links for supported networks and compares quote-token addresses across indexed pairs on the same network to surface symbol/address inconsistencies. Conflicting quote addresses appear in the flagged-market filter. This is a consistency check, not authoritative asset verification.
+- Documents the attention index's full 100-point heuristic and shows the per-market point contribution from turnover, swap-count imbalance, and price movement.
+- Flags new pools, sparse activity, and missing token addresses without silently treating them as score points. Negative or blank numeric liquidity/volume/count fields are treated as invalid rather than being silently clamped to zero.
+- Blocks CSV export while synthetic example mode is active.
 - Adds no-dependency frontend/API smoke tests and a GitHub Actions workflow.
 
 - Searches DEX Screener for ZEC, Zcash, ZCAT, and MASK, then filters results to pairs where `quoteToken.symbol` is exactly `ZEC`.
