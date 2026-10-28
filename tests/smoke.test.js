@@ -31,6 +31,7 @@ for (const marker of [
   'CSV export is disabled in example mode',
   'Promise.allSettled',
   'PARTIAL SCAN',
+  'No matching pairs were found in successful queries',
   'QUOTE ADDRESS MISSING',
   'Attention index breakdown',
   'function renderFootprint(){const root=',
