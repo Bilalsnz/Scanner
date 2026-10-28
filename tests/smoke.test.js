@@ -62,6 +62,16 @@ assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: 'LookAli
 assert.equal(referenceCheck({ chainId: 'ethereum', quoteToken: { address: '0xabc' } }).status, 'not_configured');
 assert.equal(referenceCheck({ chainId: 'solana', quoteToken: {} }).status, 'unavailable');
 
+const refStart = inlineScripts[0].indexOf('function referenceCheck(p){');
+const refEnd = inlineScripts[0].indexOf('\\nfunction knownPrice(v)', refStart);
+assert.ok(refStart >= 0 && refEnd > refStart, 'curated token-reference check must be extractable');
+const referenceCheck = new Function(inlineScripts[0].slice(refStart, refEnd) + '; return referenceCheck;')();
+const omniMint = 'A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS';
+assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: omniMint } }).status, 'match');
+assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: 'another-mint' } }).status, 'unmatched');
+assert.equal(referenceCheck({ chainId: 'ethereum', quoteToken: { address: '0x123' } }).status, 'not_configured');
+assert.equal(referenceCheck({ chainId: 'solana', quoteToken: {} }).status, 'unavailable');
+
 const calcStart = inlineScripts[0].indexOf('function calc(p){');
 const calcEnd = inlineScripts[0].indexOf('\nfunction norm(p)', calcStart);
 assert.ok(calcStart >= 0 && calcEnd > calcStart, 'market scoring function must be extractable for tests');
