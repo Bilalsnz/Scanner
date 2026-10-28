@@ -30,6 +30,10 @@ A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token
 - Includes a clearly labelled synthetic example mode. Starting a live scan clears example values; example values are never silently substituted after an API failure.
 - No wallet, trade execution, paid data dependency, or claim that quote-token backing is verified.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
+
 ## Submission materials
 
 See [SUBMISSION.md](SUBMISSION.md) for the product pitch, methodology, architecture, demo flow, and current limitations.
