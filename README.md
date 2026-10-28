@@ -1,8 +1,13 @@
 # ZEC SIGNAL
 
-A mobile-first, read-only market-intelligence scanner for indexed DEX pairs whose quote-token symbol is ZEC.
+A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token symbol is ZEC.
 
-## Build 0.2.0
+## Build 0.3.0
+
+- Makes the identity limitation explicit: the app currently matches a provider-reported quote-token symbol, and does not independently verify the asset against an authoritative Zcash registry.
+- Renames “evidence coverage” to “field completeness” to avoid implying that present fields are independently verified.
+- Clarifies that the attention index is a heuristic priority signal, not a risk probability. A zero score means no configured trigger fired, not that the market is safe.
+- Fixes minimum-liquidity filtering so markets with unknown liquidity are not incorrectly treated as meeting a positive minimum threshold.
 
 - Searches DEX Screener for ZEC, ZCAT, and MASK, then filters results to pairs where `quoteToken.symbol` is exactly `ZEC`.
 - Displays provider-reported price, 24h change, liquidity, volume, and buy/sell transaction counts.
@@ -19,7 +24,7 @@ Deploy this repository to Vercel. The `api/markets.js` serverless function proxi
 
 ## Data limitations
 
-Source: https://docs.dexscreener.com/api/reference. Pair search is not exhaustive; only results returned for the configured queries are scanned. A ZEC quote symbol does not prove that the quote token is native ZEC, backed 1:1, redeemable, or issued by a trusted custodian. Data can be stale, incomplete, manipulated, or unavailable. The attention score is a research heuristic, not a prediction, safety rating, confidence score, or buy recommendation. Evidence coverage measures whether selected fields exist, not whether the information is true or trustworthy. Buy/sell counts are transactions, not unique traders, trade sizes, or net capital flow. No historical anomaly baseline is claimed.
+Source: https://docs.dexscreener.com/api/reference. Pair search is not exhaustive; only results returned for the configured queries are scanned. A ZEC quote symbol does not prove that the quote token is native ZEC, backed 1:1, redeemable, or issued by a trusted custodian. Data can be stale, incomplete, manipulated, or unavailable. The attention index is a research heuristic, not a prediction, risk probability, safety rating, confidence score, or buy recommendation. Field completeness measures whether selected fields exist, not whether the information is true or trustworthy. A zero score means no configured scoring trigger fired, not that the market is safe. Buy/sell counts are transactions, not unique traders, trade sizes, or net capital flow. No historical anomaly baseline is claimed. Independent quote-asset identity verification, contract-risk analysis, historical anomaly baselines, and executable trade-depth simulation are not implemented.
 
 Liquidity and volume totals include known provider values only; unknown values are not evidence of zero. A provider-reported zero liquidity value is kept distinct from missing liquidity. A displayed price may not be executable at a meaningful size.
 
