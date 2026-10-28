@@ -27,6 +27,7 @@ The interface provides:
 - **Search provenance:** each configured query displays whether it succeeded and how many pairs the provider returned, so partial search coverage is visible.
 - **Failure-aware behavior:** partial query failures are disclosed without discarding successful query results. Failed live scans never silently fall back to synthetic data. CSV export is blocked in example mode.
 - **Address consistency checks:** quote-token addresses are compared across indexed pairs on the same network. Conflicts are surfaced, but consistency is explicitly not treated as proof of authenticity.
+- **Curated Solana mint reference:** the app compares the quote mint with a documented OmniBridge ZEC reference address, links the reference notes and Solscan, and distinguishes a match from an unmatched mint. This is a scoped reference check, not an authoritative asset registry or proof of reserves, bridge security, or redeemability.
 
 ## Why the design is deliberately read-only
 
