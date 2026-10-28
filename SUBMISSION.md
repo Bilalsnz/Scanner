@@ -23,6 +23,7 @@ The interface provides:
 - **Separate data-quality and market-context flags:** missing or zero liquidity, thin liquidity, missing token addresses, sparse activity, new pools, high turnover, count imbalance and large price moves are not silently blended into a single “safe/unsafe” verdict.
 - **Market footprint:** reported liquidity distribution by network and the largest currently indexed pools by reported liquidity. Unknown values stay unknown rather than being presented as zero.
 - **Analyst workflow:** network and liquidity filters, sorting, flagged-market view, browser-local watchlist, explorer links, CSV export and comparisons against the previous complete scan in the same browser.
+- **Search provenance:** each configured query displays whether it succeeded and how many pairs the provider returned, so partial search coverage is visible.
 - **Failure-aware behavior:** partial query failures are disclosed without discarding successful query results. Failed live scans never silently fall back to synthetic data. CSV export is blocked in example mode.
 - **Address consistency checks:** quote-token addresses are compared across indexed pairs on the same network. Conflicts are surfaced, but consistency is explicitly not treated as proof of authenticity.
 
