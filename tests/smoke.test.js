@@ -3,6 +3,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+const vercelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8'));
+assert.equal(packageJson.version, '0.5.0', 'package and app release versions should match');
+assert.equal(vercelConfig.functions['api/markets.js'].maxDuration, 10);
+assert.ok(vercelConfig.headers.some((rule) => rule.headers.some((header) => header.key === 'X-Content-Type-Options')));
+assert.ok(fs.existsSync(path.join(__dirname, '..', 'favicon.svg')), 'branded favicon should exist');
 const inlineScripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 assert.equal(inlineScripts.length, 1, 'expected one inline application script');
 for (const script of inlineScripts) new Function(script);
