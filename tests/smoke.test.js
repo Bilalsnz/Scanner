@@ -132,5 +132,11 @@ async function invoke(req, fetchImpl) {
   assert.equal(badShape.status, 502, 'unexpected provider response shapes must be rejected');
   assert.equal(badShape.headers['cache-control'], 'no-store');
 
+  const missingPairs = await invoke({ method: 'GET', query: { q: 'ZEC' } }, async () => ({
+    ok: true, status: 200, text: async () => JSON.stringify({ schemaVersion: '1.0.0' })
+  }));
+  assert.equal(missingPairs.status, 502, 'provider responses missing the pairs field must be rejected');
+  assert.equal(missingPairs.headers['cache-control'], 'no-store');
+
   console.log('ZEC SIGNAL checks passed: frontend syntax, product guardrails, filters and API failure handling.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });
