@@ -63,7 +63,7 @@ assert.equal(referenceCheck({ chainId: 'ethereum', quoteToken: { address: '0xabc
 assert.equal(referenceCheck({ chainId: 'solana', quoteToken: {} }).status, 'unavailable');
 
 const refStart = inlineScripts[0].indexOf('function referenceCheck(p){');
-const refEnd = inlineScripts[0].indexOf('\\nfunction knownPrice(v)', refStart);
+const refEnd = inlineScripts[0].indexOf('\nfunction knownPrice(v)', refStart);
 assert.ok(refStart >= 0 && refEnd > refStart, 'curated token-reference check must be extractable');
 const referenceCheck = new Function(inlineScripts[0].slice(refStart, refEnd) + '; return referenceCheck;')();
 const omniMint = 'A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS';
