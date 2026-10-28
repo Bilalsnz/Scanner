@@ -19,6 +19,7 @@ for (const marker of [
   'LIMITS OF THE REFERENCE CHECK',
   'function referenceCheck(p)',
   'QUOTE REFERENCE UNMATCHED',
+  'const displayFlags=[...a.flags]',
   'quote_reference_status',
   'function exportCsv',
   'zec-signal-watchlist-v1',
