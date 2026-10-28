@@ -11,6 +11,7 @@ A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token
 - Adds network, flagged-market, watchlist, liquidity, and ranking filters; CSV export respects the currently visible filtered market set.
 - Adds a browser-local watchlist and compares reported liquidity/volume against the prior successful scan on the same browser. These observations are local-only and do not create a server-side historical database.
 - Keeps successful query results when one of the configured searches fails, labels the scan partial, and reports how many queries failed instead of discarding all results.
+- Shows each configured search term's success/failure and provider-returned pair count, making query coverage visible rather than presenting one unexplained total.
 - Adds explorer links for supported networks and compares quote-token addresses across indexed pairs on the same network to surface symbol/address inconsistencies. Conflicting quote addresses appear in the flagged-market filter. This is a consistency check, not authoritative asset verification.
 - Documents the attention index's full 100-point heuristic and shows the per-market point contribution from turnover, swap-count imbalance, and price movement.
 - Flags new pools, sparse activity, and missing token addresses without silently treating them as score points. Negative or blank numeric liquidity/volume/count fields are treated as invalid rather than being silently clamped to zero.
