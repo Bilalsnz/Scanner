@@ -28,6 +28,10 @@ A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token
 - Includes a clearly labelled synthetic example mode. Starting a live scan clears example values; example values are never silently substituted after an API failure.
 - No wallet, trade execution, paid data dependency, or claim that quote-token backing is verified.
 
+## Submission materials
+
+See [SUBMISSION.md](SUBMISSION.md) for the product pitch, methodology, architecture, demo flow, and current limitations.
+
 ## Quality checks
 
 Run npm test with Node.js 20 or later. GitHub Actions runs the no-dependency smoke tests on pushes and pull requests to main.
