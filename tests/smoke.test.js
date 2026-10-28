@@ -100,6 +100,7 @@ async function invoke(req, fetchImpl) {
 
   const invalid = await invoke({ method: 'GET', query: { q: '<script>' } });
   assert.equal(invalid.status, 400, 'unsafe query characters must be rejected');
+  assert.equal(invalid.headers['cache-control'], 'no-store');
 
   let requestedUrl = '';
   const ok = await invoke({ method: 'GET', query: { q: 'ZEC' } }, async (url) => {
@@ -115,11 +116,19 @@ async function invoke(req, fetchImpl) {
     ok: false, status: 429, text: async () => 'rate limited'
   }));
   assert.equal(upstream.status, 502, 'upstream failures must be surfaced as gateway errors');
+  assert.equal(upstream.headers['cache-control'], 'no-store', 'upstream errors must not be cached');
 
   const network = await invoke({ method: 'GET', query: { q: 'ZEC' } }, async () => {
     throw new Error('offline');
   });
   assert.equal(network.status, 502, 'network failures must not be disguised as live data');
+  assert.equal(network.headers['cache-control'], 'no-store', 'network errors must not be cached');
+
+  const badShape = await invoke({ method: 'GET', query: { q: 'ZEC' } }, async () => ({
+    ok: true, status: 200, text: async () => JSON.stringify({ pairs: 'not-an-array' })
+  }));
+  assert.equal(badShape.status, 502, 'unexpected provider response shapes must be rejected');
+  assert.equal(badShape.headers['cache-control'], 'no-store');
 
   console.log('ZEC SIGNAL checks passed: frontend syntax, product guardrails, filters and API failure handling.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });
