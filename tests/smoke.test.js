@@ -24,7 +24,7 @@ for (const marker of [
   'PARTIAL SCAN',
   'QUOTE ADDRESS MISSING',
   'Attention index breakdown',
-  'function renderFootprint',
+  'function renderFootprint(){const root=',
   'TOP REPORTED LIQUIDITY',
   'if(failedQueries.length===0)writeStore',
   'CSV export is disabled in example mode',
@@ -33,6 +33,8 @@ for (const marker of [
 
 assert.ok(html.includes('typeof v==="string"&&v.trim()===""'), 'empty strings must not count as valid numeric data');
 assert.ok(html.includes('min===0||(p._a.liqKnown&&p._a.liq>=min)'), 'unknown liquidity must not satisfy a positive minimum');
+assert.ok(!html.includes('function renderFootprint(){function renderFootprint(){'), 'market footprint renderer must not be accidentally nested');
+assert.ok(html.includes('renderFootprint();'), 'market footprint must be refreshed with scan results');
 assert.ok(html.includes('A score of 0 means no configured scoring trigger fired'), 'zero attention index must not be presented as safety');
 
 const safeFnMatch = inlineScripts[0].match(/function safeMarketUrl\(value\)\{[^\n]+\}/);
