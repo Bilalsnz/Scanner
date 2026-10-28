@@ -38,7 +38,7 @@ Run npm test with Node.js 20 or later. GitHub Actions runs the no-dependency smo
 
 ## Deploy
 
-Deploy this repository to Vercel. The `api/markets.js` serverless function proxies the DEX Screener search endpoint to avoid relying on browser CORS. `index.html` calls the same-origin proxy. No build step or package installation is required.
+Deploy this repository to Vercel. The `api/markets.js` serverless function proxies the DEX Screener search endpoint to avoid relying on browser CORS. `index.html` calls the same-origin proxy. No build step or third-party package installation is required. The `vercel.json` file sets the API function timeout and baseline browser security headers.
 
 ## Data limitations
 
