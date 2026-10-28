@@ -2,21 +2,31 @@
 
 A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token symbol is ZEC.
 
-## Build 0.3.0
+## Build 0.4.0
 
 - Makes the identity limitation explicit: the app currently matches a provider-reported quote-token symbol, and does not independently verify the asset against an authoritative Zcash registry.
 - Renames “evidence coverage” to “field completeness” to avoid implying that present fields are independently verified.
 - Clarifies that the attention index is a heuristic priority signal, not a risk probability. A zero score means no configured trigger fired, not that the market is safe.
 - Fixes minimum-liquidity filtering so markets with unknown liquidity are not incorrectly treated as meeting a positive minimum threshold.
+- Adds network, flagged-market, watchlist, liquidity, and ranking filters; CSV export respects the currently visible filtered market set.
+- Adds a browser-local watchlist and compares reported liquidity/volume against the prior successful scan on the same browser. These observations are local-only and do not create a server-side historical database.
+- Adds explorer links for supported networks and compares quote-token addresses across indexed pairs on the same network to surface symbol/address inconsistencies. This is a consistency check, not authoritative asset verification.
+- Documents the attention index's full 100-point heuristic and adds new-pool and sparse-activity flags without silently treating them as score points.
+- Adds no-dependency frontend/API smoke tests and a GitHub Actions workflow.
 
-- Searches DEX Screener for ZEC, ZCAT, and MASK, then filters results to pairs where `quoteToken.symbol` is exactly `ZEC`.
+- Searches DEX Screener for ZEC, Zcash, ZCAT, and MASK, then filters results to pairs where `quoteToken.symbol` is exactly `ZEC`.
 - Displays provider-reported price, 24h change, liquidity, volume, and buy/sell transaction counts.
-- Separates an **attention score** from **evidence coverage**. The attention score uses selected turnover, swap-count imbalance, and price-move indicators. Liquidity does not add points to the attention score.
-- Separately flags zero, missing, and thin liquidity. A volume/liquidity ratio is not calculated when liquidity is missing or zero.
-- Shows a per-pair explanation, market flags, data-field coverage, token addresses, pair address, pair age where available, provider link, and the app's fetch time.
+- Uses an **attention index** on a documented 0–100 heuristic scale: turnover contributes up to 40 points, buy/sell count imbalance up to 30, and absolute 24h price movement up to 30. Liquidity warnings are separate and do not add score points. This is not calibrated to historical outcomes or a safety probability.
+- Separately flags zero, missing, and thin liquidity, new pools, and sparse activity. A volume/liquidity ratio is not calculated when liquidity is missing or zero.
+- Shows per-pair explanations, flags, token/pair addresses, pool age where available, provider links, supported chain explorer links, quote-address consistency checks, and the app's fetch time.
 - Shows scan age in the interface. The fetch time means when this app received a provider response, not when every underlying market field was last updated.
+- Adds CSV export for the currently filtered market set, a browser-local watchlist, and previous-scan comparisons for reported liquidity and volume.
 - Includes a clearly labelled synthetic example mode. Starting a live scan clears example values; example values are never silently substituted after an API failure.
 - No wallet, trade execution, paid data dependency, or claim that quote-token backing is verified.
+
+## Quality checks
+
+Run npm test with Node.js 20 or later. GitHub Actions runs the no-dependency smoke tests on pushes and pull requests to main.
 
 ## Deploy
 
