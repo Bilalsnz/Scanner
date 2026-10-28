@@ -20,6 +20,7 @@ ZEC SIGNAL searches DEX Screener for four terms (`ZEC`, `Zcash`, `ZCAT`, and `MA
 The interface provides:
 
 - **An explainable attention index (0–100):** turnover contributes up to 40 points, buy/sell transaction-count imbalance up to 30, and absolute 24-hour price movement up to 30. The inspector shows each component. The index is a deterministic research-priority heuristic, not a probability, safety score or trading recommendation.
+  Every non-zero score trigger also has a matching visible flag, so a scored market does not hide the reason it received attention.
 - **Separate data-quality and market-context flags:** missing or zero liquidity, thin liquidity, missing token addresses, sparse activity, new pools, high turnover, count imbalance and large price moves are not silently blended into a single “safe/unsafe” verdict.
 - **Market footprint:** reported liquidity distribution by network and the largest currently indexed pools by reported liquidity. Unknown values stay unknown rather than being presented as zero.
 - **Analyst workflow:** network and liquidity filters, sorting, flagged-market view, browser-local watchlist, explorer links, CSV export and comparisons against the previous complete scan in the same browser.
