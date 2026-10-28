@@ -25,6 +25,8 @@ for (const marker of [
   'QUOTE ADDRESS MISSING',
   'Attention index breakdown',
   'function renderFootprint(){const root=',
+  'id="queryCoverage"',
+  "queries[i]+' '+(x.status==='fulfilled'",
   'TOP REPORTED LIQUIDITY',
   'if(failedQueries.length===0)writeStore',
   'CSV export is disabled in example mode',
