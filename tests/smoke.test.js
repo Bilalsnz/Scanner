@@ -24,6 +24,10 @@ for (const marker of [
   'PARTIAL SCAN',
   'QUOTE ADDRESS MISSING',
   'Attention index breakdown',
+  'function renderFootprint',
+  'TOP REPORTED LIQUIDITY',
+  'if(failedQueries.length===0)writeStore',
+  'CSV export is disabled in example mode',
   'components:{turnover:turnoverPoints'
 ]) assert.ok(html.includes(marker), 'missing product guardrail or feature: ' + marker);
 
