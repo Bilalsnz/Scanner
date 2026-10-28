@@ -35,6 +35,47 @@ assert.ok(html.includes('typeof v==="string"&&v.trim()===""'), 'empty strings mu
 assert.ok(html.includes('min===0||(p._a.liqKnown&&p._a.liq>=min)'), 'unknown liquidity must not satisfy a positive minimum');
 assert.ok(html.includes('A score of 0 means no configured scoring trigger fired'), 'zero attention index must not be presented as safety');
 
+const safeFnMatch = inlineScripts[0].match(/function safeMarketUrl\\(value\\)\\{[^\\n]+\\}/);
+assert.ok(safeFnMatch, 'market URL validator must exist');
+const safeMarketUrl = new Function('URL', safeFnMatch[0] + '; return safeMarketUrl;')(URL);
+assert.equal(safeMarketUrl('https://dexscreener.com/solana/example'), 'https://dexscreener.com/solana/example');
+assert.equal(safeMarketUrl('https://www.dexscreener.com/solana/example'), 'https://www.dexscreener.com/solana/example');
+assert.equal(safeMarketUrl('javascript:alert(1)'), 'https://dexscreener.com');
+assert.equal(safeMarketUrl('https://evil.example/path'), 'https://dexscreener.com');
+
+const calcStart = inlineScripts[0].indexOf('function calc(p){');
+const calcEnd = inlineScripts[0].indexOf('\\nfunction norm(p)', calcStart);
+assert.ok(calcStart >= 0 && calcEnd > calcStart, 'market scoring function must be extractable for tests');
+const calcSource = inlineScripts[0].slice(calcStart, calcEnd);
+const calc = new Function('usd', 'num', calcSource + '; return calc;')(
+  (value) => '$' + Number(value).toFixed(2),
+  (value) => Number.isFinite(Number(value)) ? Number(value) : 0
+);
+const fullySignalled = calc({
+  chainId: 'solana', pairCreatedAt: Date.now() - 2 * 86400000,
+  liquidity: { usd: 100 }, volume: { h24: 300 }, priceChange: { h24: 50 },
+  txns: { h24: { buys: 70, sells: 30 } },
+  baseToken: { address: 'base' }, quoteToken: { address: 'quote' }, pairAddress: 'pair'
+});
+assert.equal(fullySignalled.score, 100, 'the three documented components should sum to 100');
+assert.deepEqual(fullySignalled.components, { turnover: 40, imbalance: 30, move: 30 });
+const missingLiquidity = calc({
+  liquidity: { usd: '' }, volume: { h24: 50 }, priceChange: { h24: 0 },
+  txns: { h24: { buys: 2, sells: 2 } },
+  baseToken: { address: 'base' }, quoteToken: { address: 'quote' }, pairAddress: 'pair'
+});
+assert.equal(missingLiquidity.liqKnown, false);
+assert.equal(missingLiquidity.ratio, null);
+assert.ok(missingLiquidity.flags.includes('LIQUIDITY UNKNOWN'));
+assert.ok(!missingLiquidity.flags.includes('ZERO LIQUIDITY'), 'blank liquidity must not become zero');
+const zeroLiquidity = calc({
+  liquidity: { usd: 0 }, volume: { h24: 50 }, priceChange: { h24: 0 },
+  txns: { h24: { buys: 2, sells: 2 } },
+  baseToken: { address: 'base' }, quoteToken: { address: 'quote' }, pairAddress: 'pair'
+});
+assert.equal(zeroLiquidity.ratio, null);
+assert.ok(zeroLiquidity.flags.includes('ZERO LIQUIDITY'));
+
 const handler = require('../api/markets.js');
 async function invoke(req, fetchImpl) {
   const originalFetch = global.fetch;
