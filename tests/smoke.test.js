@@ -35,7 +35,7 @@ assert.ok(html.includes('typeof v==="string"&&v.trim()===""'), 'empty strings mu
 assert.ok(html.includes('min===0||(p._a.liqKnown&&p._a.liq>=min)'), 'unknown liquidity must not satisfy a positive minimum');
 assert.ok(html.includes('A score of 0 means no configured scoring trigger fired'), 'zero attention index must not be presented as safety');
 
-const safeFnMatch = inlineScripts[0].match(/function safeMarketUrl\\(value\\)\\{[^\\n]+\\}/);
+const safeFnMatch = inlineScripts[0].match(/function safeMarketUrl\(value\)\{[^\n]+\}/);
 assert.ok(safeFnMatch, 'market URL validator must exist');
 const safeMarketUrl = new Function('URL', safeFnMatch[0] + '; return safeMarketUrl;')(URL);
 assert.equal(safeMarketUrl('https://dexscreener.com/solana/example'), 'https://dexscreener.com/solana/example');
@@ -44,7 +44,7 @@ assert.equal(safeMarketUrl('javascript:alert(1)'), 'https://dexscreener.com');
 assert.equal(safeMarketUrl('https://evil.example/path'), 'https://dexscreener.com');
 
 const calcStart = inlineScripts[0].indexOf('function calc(p){');
-const calcEnd = inlineScripts[0].indexOf('\\nfunction norm(p)', calcStart);
+const calcEnd = inlineScripts[0].indexOf('\nfunction norm(p)', calcStart);
 assert.ok(calcStart >= 0 && calcEnd > calcStart, 'market scoring function must be extractable for tests');
 const calcSource = inlineScripts[0].slice(calcStart, calcEnd);
 const calc = new Function('usd', 'num', calcSource + '; return calc;')(
