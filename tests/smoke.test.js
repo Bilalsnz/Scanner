@@ -53,6 +53,15 @@ assert.equal(safeMarketUrl('https://www.dexscreener.com/solana/example'), 'https
 assert.equal(safeMarketUrl('javascript:alert(1)'), 'https://dexscreener.com');
 assert.equal(safeMarketUrl('https://evil.example/path'), 'https://dexscreener.com');
 
+const referenceFnMatch = inlineScripts[0].match(/function referenceCheck\\(p\\)\\{[^\\n]+\\}/);
+assert.ok(referenceFnMatch, 'curated reference-mint check must exist');
+const referenceCheck = new Function(referenceFnMatch[0] + '; return referenceCheck;')();
+const omniBridgeMint = 'A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS';
+assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: omniBridgeMint } }).status, 'match');
+assert.equal(referenceCheck({ chainId: 'solana', quoteToken: { address: 'LookAlikeMint' } }).status, 'unmatched');
+assert.equal(referenceCheck({ chainId: 'ethereum', quoteToken: { address: '0xabc' } }).status, 'not_configured');
+assert.equal(referenceCheck({ chainId: 'solana', quoteToken: {} }).status, 'unavailable');
+
 const calcStart = inlineScripts[0].indexOf('function calc(p){');
 const calcEnd = inlineScripts[0].indexOf('\nfunction norm(p)', calcStart);
 assert.ok(calcStart >= 0 && calcEnd > calcStart, 'market scoring function must be extractable for tests');
