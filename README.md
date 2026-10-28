@@ -2,7 +2,7 @@
 
 A mobile-first, read-only market scanner for indexed DEX pairs whose quote-token symbol is ZEC.
 
-## Build 0.4.0
+## Build 0.5.0
 
 - Makes the identity limitation explicit: the app currently matches a provider-reported quote-token symbol, and does not independently verify the asset against an authoritative Zcash registry.
 - Renames “evidence coverage” to “field completeness” to avoid implying that present fields are independently verified.
