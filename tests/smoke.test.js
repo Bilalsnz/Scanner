@@ -16,7 +16,10 @@ for (const script of inlineScripts) new Function(script);
 for (const marker of [
   'QUOTE IDENTITY UNVERIFIED',
   'Field completeness',
-  'IDENTITY CHECK: UNVERIFIED',
+  'LIMITS OF THE REFERENCE CHECK',
+  'function referenceCheck(p)',
+  'QUOTE REFERENCE UNMATCHED',
+  'quote_reference_status',
   'function exportCsv',
   'zec-signal-watchlist-v1',
   'zec-signal-snapshot-v1',
